@@ -1,11 +1,133 @@
- <!DOCTYPE html>
-<HTML>
-  <head>
-    <title>Mi primer WEB</title>
-  </head>
-  <body>
-    <div id="">
-      <h1>Hello world!</h1>
-    </div>
-  </body>  
-</HTML>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Distribuidora (Modelo Avanzado)</title>
+
+<style>
+body { font-family: Arial; margin:0; background:#f4f6f9; }
+header { background:#1f2d3d; color:white; padding:15px; text-align:center; }
+nav { display:flex; flex-wrap:wrap; background:#34495e; }
+nav button { flex:1; padding:12px; border:none; background:none; color:white; cursor:pointer; }
+nav button:hover { background:#1f2d3d; }
+.container { padding:20px; }
+.section { display:none; }
+.active { display:block; }
+input { width:100%; padding:8px; margin:5px 0; }
+button { padding:8px; margin-top:5px; cursor:pointer; }
+table { width:100%; border-collapse:collapse; margin-top:10px; }
+th, td { border:1px solid #ccc; padding:8px; }
+th { background:#eee; }
+</style>
+</head>
+
+<body>
+<header>
+<h1>Distribuidora - Modelo Relacional Completo</h1>
+</header>
+
+<nav>
+<button onclick="show('cliente')">Cliente</button>
+<button onclick="show('producto')">Producto</button>
+<button onclick="show('proveedor')">Proveedor</button>
+<button onclick="show('trabajador')">Trabajador</button>
+<button onclick="show('compra')">Compra</button>
+<button onclick="show('detalle')">DetalleCompra</button>
+<button onclick="show('suministro')">Suministro</button>
+</nav>
+
+<div class="container">
+
+<!-- CLIENTE -->
+<div id="cliente" class="section active">
+<h2>Cliente</h2>
+<input id="c_nombre" placeholder="Nombre">
+<input id="c_ciudad" placeholder="Ciudad">
+<select id="c_tipo">
+<option value="con_factura">Con factura</option>
+<option value="sin_factura">Sin factura</option>
+</select>
+<button onclick="addCliente()">Agregar</button>
+<table><thead><tr><th>Nombre</th><th>Ciudad</th><th>Tipo</th></tr></thead><tbody id="t_cliente"></tbody></table>
+</div>
+
+<!-- PRODUCTO -->
+<div id="producto" class="section">
+<h2>Producto</h2>
+<input id="p_nombre" placeholder="Nombre">
+<input id="p_precio" type="number" placeholder="Precio">
+<input id="p_stock" type="number" placeholder="Stock">
+<button onclick="addProducto()">Agregar</button>
+<table><thead><tr><th>Nombre</th><th>Precio</th><th>Stock</th></tr></thead><tbody id="t_producto"></tbody></table>
+</div>
+
+<!-- PROVEEDOR -->
+<div id="proveedor" class="section">
+<h2>Proveedor</h2>
+<input id="pr_nombre" placeholder="Nombre">
+<input id="pr_contacto" placeholder="Contacto">
+<button onclick="addProveedor()">Agregar</button>
+<table><thead><tr><th>Nombre</th><th>Contacto</th></tr></thead><tbody id="t_proveedor"></tbody></table>
+</div>
+
+<!-- TRABAJADOR -->
+<div id="trabajador" class="section">
+<h2>Trabajador</h2>
+<input id="t_nombre" placeholder="Nombre">
+<input id="t_sueldo" type="number" placeholder="Sueldo">
+<button onclick="addTrabajador()">Agregar</button>
+<table><thead><tr><th>Nombre</th><th>Sueldo</th></tr></thead><tbody id="t_trabajador"></tbody></table>
+</div>
+
+<!-- COMPRA -->
+<div id="compra" class="section">
+<h2>Compra</h2>
+<input id="co_cliente" placeholder="ID Cliente">
+<input id="co_orden" placeholder="Num Orden">
+<button onclick="addCompra()">Agregar</button>
+<table><thead><tr><th>Cliente</th><th>Orden</th></tr></thead><tbody id="t_compra"></tbody></table>
+</div>
+
+<!-- DETALLE -->
+<div id="detalle" class="section">
+<h2>Detalle Compra</h2>
+<input id="d_compra" placeholder="ID Compra">
+<input id="d_producto" placeholder="ID Producto">
+<input id="d_cantidad" type="number" placeholder="Cantidad">
+<button onclick="addDetalle()">Agregar</button>
+<table><thead><tr><th>Compra</th><th>Producto</th><th>Cantidad</th></tr></thead><tbody id="t_detalle"></tbody></table>
+</div>
+
+<!-- SUMINISTRO -->
+<div id="suministro" class="section">
+<h2>Suministro</h2>
+<input id="s_proveedor" placeholder="Proveedor">
+<input id="s_producto" placeholder="Producto">
+<input id="s_cantidad" type="number" placeholder="Cantidad">
+<button onclick="addSuministro()">Agregar</button>
+<table><thead><tr><th>Proveedor</th><th>Producto</th><th>Cantidad</th></tr></thead><tbody id="t_suministro"></tbody></table>
+</div>
+
+</div>
+
+<script>
+function show(id){ document.querySelectorAll('.section').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+
+function addCliente(){ let n=c_nombre.value, c=c_ciudad.value, t=c_tipo.value; if(!n||!c) return; t_cliente.innerHTML+=`<tr><td>${n}</td><td>${c}</td><td>${t}</td></tr>`; }
+
+function addProducto(){ let n=p_nombre.value, pr=p_precio.value, s=p_stock.value; if(!n) return; t_producto.innerHTML+=`<tr><td>${n}</td><td>${pr}</td><td>${s}</td></tr>`; }
+
+function addProveedor(){ let n=pr_nombre.value, c=pr_contacto.value; if(!n) return; t_proveedor.innerHTML+=`<tr><td>${n}</td><td>${c}</td></tr>`; }
+
+function addTrabajador(){ let n=t_nombre.value, s=t_sueldo.value; if(!n) return; t_trabajador.innerHTML+=`<tr><td>${n}</td><td>${s}</td></tr>`; }
+
+function addCompra(){ let c=co_cliente.value, o=co_orden.value; if(!c) return; t_compra.innerHTML+=`<tr><td>${c}</td><td>${o}</td></tr>`; }
+
+function addDetalle(){ let c=d_compra.value, p=d_producto.value, ca=d_cantidad.value; if(!c||!p) return; t_detalle.innerHTML+=`<tr><td>${c}</td><td>${p}</td><td>${ca}</td></tr>`; }
+
+function addSuministro(){ let pr=s_proveedor.value, p=s_producto.value, c=s_cantidad.value; if(!pr) return; t_suministro.innerHTML+=`<tr><td>${pr}</td><td>${p}</td><td>${c}</td></tr>`; }
+</script>
+
+</body>
+</html>
