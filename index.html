@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sistema Distribuidora (Modelo Avanzado)</title>
+<title>Sistema Distribuidora Kafra</title>
 
 <style>
 body { font-family: Arial; margin:0; background:#f4f6f9; }
@@ -14,119 +14,737 @@ nav button:hover { background:#1f2d3d; }
 .container { padding:20px; }
 .section { display:none; }
 .active { display:block; }
-input { width:100%; padding:8px; margin:5px 0; }
+input, select { width:100%; padding:8px; margin:5px 0; }
 button { padding:8px; margin-top:5px; cursor:pointer; }
 table { width:100%; border-collapse:collapse; margin-top:10px; }
 th, td { border:1px solid #ccc; padding:8px; }
 th { background:#eee; }
+.error { color:red; font-size:13px; margin-top:5px; }
 </style>
 </head>
 
 <body>
 <header>
-<h1>Distribuidora Kafra</h1>
+  <h1>Distribuidora Kafra</h1>
 </header>
 
 <nav>
-<button onclick="show('cliente')">Cliente</button>
-<button onclick="show('producto')">Producto</button>
-<button onclick="show('proveedor')">Proveedor</button>
-<button onclick="show('trabajador')">Trabajador</button>
-<button onclick="show('compra')">Compra</button>
-<button onclick="show('detalle')">DetalleCompra</button>
-<button onclick="show('suministro')">Suministro</button>
+  <button onclick="show('distribuidora')">Distribuidora</button>
+  <button onclick="show('cliente')">Cliente</button>
+  <button onclick="show('clienteFactura')">ClienteConFactura</button>
+  <button onclick="show('clienteSinFactura')">ClienteSinFactura</button>
+  <button onclick="show('proveedor')">Proveedor</button>
+  <button onclick="show('producto')">Producto</button>
+  <button onclick="show('trabajador')">Trabajador</button>
+  <button onclick="show('trabajadorInterno')">TrabajadorInterno</button>
+  <button onclick="show('repartidor')">RepartidorConseguidor</button>
+  <button onclick="show('compra')">Compra</button>
+  <button onclick="show('detalle')">DetalleCompra</button>
+  <button onclick="show('suministro')">Suministro</button>
+  <button onclick="show('telCliente')">Telefonos_Cliente</button>
+  <button onclick="show('telTrabajador')">Telefonos_Trabajador</button>
 </nav>
 
 <div class="container">
 
-<!-- CLIENTE -->
-<div id="cliente" class="section active">
-<h2>Cliente</h2>
-<input id="c_nombre" placeholder="Nombre">
-<input id="c_ciudad" placeholder="Ciudad">
-<select id="c_tipo">
-<option value="con_factura">Con factura</option>
-<option value="sin_factura">Sin factura</option>
-</select>
-<button onclick="addCliente()">Agregar</button>
-<table><thead><tr><th>Nombre</th><th>Ciudad</th><th>Tipo</th></tr></thead><tbody id="t_cliente"></tbody></table>
-</div>
+  <!-- DISTRIBUIDORA -->
+  <div id="distribuidora" class="section active">
+    <h2>Distribuidora</h2>
+    <input id="dis_nombre" placeholder="Nombre">
+    <input id="dis_rfc" placeholder="RFC (12-13 caracteres)" maxlength="13">
+    <input id="dis_dir" placeholder="Calle y Ciudad">
+    <input id="dis_cp" placeholder="Código Postal (5 dígitos)" maxlength="5">
+    <input id="dis_tel" placeholder="Teléfono">
+    <input id="dis_correo" placeholder="Correo electrónico">
+    <button onclick="addDistribuidora()">Agregar</button>
+    <div id="err_distribuidora" class="error"></div>
+    <table>
+      <thead><tr><th>Nombre</th><th>RFC</th><th>Dirección</th><th>CP</th><th>Teléfono</th><th>Correo</th><th>Eliminar</th></tr></thead>
+      <tbody id="t_distribuidora"></tbody>
+    </table>
+  </div>
 
-<!-- PRODUCTO -->
-<div id="producto" class="section">
-<h2>Producto</h2>
-<input id="p_nombre" placeholder="Nombre">
-<input id="p_precio" type="number" placeholder="Precio">
-<input id="p_stock" type="number" placeholder="Stock">
-<button onclick="addProducto()">Agregar</button>
-<table><thead><tr><th>Nombre</th><th>Precio</th><th>Stock</th></tr></thead><tbody id="t_producto"></tbody></table>
-</div>
+  <!-- CLIENTE -->
+  <div id="cliente" class="section">
+    <h2>Cliente</h2>
+    <input id="c_nombre" placeholder="Nombre">
+    <input id="c_dir" placeholder="Calle y Ciudad">
+    <input id="c_cp" placeholder="Código Postal" maxlength="5">
+    <input id="c_correo" placeholder="Correo electrónico">
+    <select id="c_tipo">
+      <option value="Sin factura">Sin factura</option>
+      <option value="Con factura">Con factura</option>
+    </select>
+    <select id="c_atencion">
+      <option value="Mostrador">Mostrador</option>
+      <option value="Domicilio">Domicilio</option>
+      <option value="Mayoreo">Mayoreo</option>
+    </select>
+    <button onclick="addCliente()">Agregar</button>
+    <div id="err_cliente" class="error"></div>
+    <table>
+      <thead><tr><th>ID</th><th>Nombre</th><th>Dirección</th><th>CP</th><th>Correo</th><th>Tipo Cliente</th><th>Tipo Atención</th><th>Eliminar</th></tr></thead>
+      <tbody id="t_cliente"></tbody>
+    </table>
+  </div>
 
-<!-- PROVEEDOR -->
-<div id="proveedor" class="section">
-<h2>Proveedor</h2>
-<input id="pr_nombre" placeholder="Nombre">
-<input id="pr_contacto" placeholder="Contacto">
-<button onclick="addProveedor()">Agregar</button>
-<table><thead><tr><th>Nombre</th><th>Contacto</th></tr></thead><tbody id="t_proveedor"></tbody></table>
-</div>
+  <!-- CLIENTE CON FACTURA -->
+  <div id="clienteFactura" class="section">
+    <h2>ClienteConFactura</h2>
+    <input id="cf_id" type="number" placeholder="ID Cliente">
+    <input id="cf_rfc" placeholder="RFC (12-13 caracteres)" maxlength="13">
+    <button onclick="addClienteFactura()">Agregar</button>
+    <div id="err_clienteFactura" class="error"></div>
+    <table>
+      <thead><tr><th>ID Cliente</th><th>RFC</th><th>Eliminar</th></tr></thead>
+      <tbody id="t_clienteFactura"></tbody>
+    </table>
+  </div>
 
-<!-- TRABAJADOR -->
-<div id="trabajador" class="section">
-<h2>Trabajador</h2>
-<input id="t_nombre" placeholder="Nombre">
-<input id="t_sueldo" type="number" placeholder="Sueldo">
-<button onclick="addTrabajador()">Agregar</button>
-<table><thead><tr><th>Nombre</th><th>Sueldo</th></tr></thead><tbody id="t_trabajador"></tbody></table>
-</div>
+  <!-- CLIENTE SIN FACTURA -->
+  <div id="clienteSinFactura" class="section">
+    <h2>ClienteSinFactura</h2>
+    <input id="csf_id" type="number" placeholder="ID Cliente">
+    <button onclick="addClienteSinFactura()">Agregar</button>
+    <div id="err_clienteSinFactura" class="error"></div>
+    <table>
+      <thead><tr><th>ID Cliente</th><th>Eliminar</th></tr></thead>
+      <tbody id="t_clienteSinFactura"></tbody>
+    </table>
+  </div>
 
-<!-- COMPRA -->
-<div id="compra" class="section">
-<h2>Compra</h2>
-<input id="co_cliente" placeholder="ID Cliente">
-<input id="co_orden" placeholder="Num Orden">
-<button onclick="addCompra()">Agregar</button>
-<table><thead><tr><th>Cliente</th><th>Orden</th></tr></thead><tbody id="t_compra"></tbody></table>
-</div>
+  <!-- PROVEEDOR -->
+  <div id="proveedor" class="section">
+    <h2>Proveedor</h2>
+    <input id="pr_nombre" placeholder="Nombre">
+    <input id="pr_rfc" placeholder="RFC" maxlength="13">
+    <input id="pr_contacto" placeholder="Contacto">
+    <button onclick="addProveedor()">Agregar</button>
+    <div id="err_proveedor" class="error"></div>
+    <table>
+      <thead><tr><th>ID</th><th>Nombre</th><th>RFC</th><th>Contacto</th><th>Eliminar</th></tr></thead>
+      <tbody id="t_proveedor"></tbody>
+    </table>
+  </div>
 
-<!-- DETALLE -->
-<div id="detalle" class="section">
-<h2>Detalle Compra</h2>
-<input id="d_compra" placeholder="ID Compra">
-<input id="d_producto" placeholder="ID Producto">
-<input id="d_cantidad" type="number" placeholder="Cantidad">
-<button onclick="addDetalle()">Agregar</button>
-<table><thead><tr><th>Compra</th><th>Producto</th><th>Cantidad</th></tr></thead><tbody id="t_detalle"></tbody></table>
-</div>
+  <!-- PRODUCTO -->
+  <div id="producto" class="section">
+    <h2>Producto</h2>
+    <input id="p_nombre" placeholder="Nombre">
+    <input id="p_codigo" placeholder="Código de barras">
+    <input id="p_precio" type="number" placeholder="Precio de venta">
+    <input id="p_stock" type="number" placeholder="Stock">
+    <button onclick="addProducto()">Agregar</button>
+    <div id="err_producto" class="error"></div>
+    <table>
+      <thead><tr><th>ID</th><th>Nombre</th><th>Código de Barras</th><th>Precio</th><th>Stock</th><th>Eliminar</th></tr></thead>
+      <tbody id="t_producto"></tbody>
+    </table>
+  </div>
 
-<!-- SUMINISTRO -->
-<div id="suministro" class="section">
-<h2>Suministro</h2>
-<input id="s_proveedor" placeholder="Proveedor">
-<input id="s_producto" placeholder="Producto">
-<input id="s_cantidad" type="number" placeholder="Cantidad">
-<button onclick="addSuministro()">Agregar</button>
-<table><thead><tr><th>Proveedor</th><th>Producto</th><th>Cantidad</th></tr></thead><tbody id="t_suministro"></tbody></table>
-</div>
+  <!-- TRABAJADOR -->
+  <div id="trabajador" class="section">
+    <h2>Trabajador</h2>
+    <input id="tr_nombre" placeholder="Nombre">
+    <input id="tr_curp" placeholder="CURP" maxlength="18">
+    <input id="tr_sueldo" type="number" placeholder="Sueldo">
+    <input id="tr_distrib" type="number" placeholder="ID Distribuidora">
+    <button onclick="addTrabajador()">Agregar</button>
+    <div id="err_trabajador" class="error"></div>
+    <table>
+      <thead><tr><th>ID</th><th>Nombre</th><th>CURP</th><th>Sueldo</th><th>ID Distribuidora</th><th>Eliminar</th></tr></thead>
+      <tbody id="t_trabajador"></tbody>
+    </table>
+  </div>
+
+  <!-- TRABAJADOR INTERNO -->
+  <div id="trabajadorInterno" class="section">
+    <h2>TrabajadorInterno</h2>
+    <input id="ti_id" type="number" placeholder="ID Trabajador">
+    <select id="ti_turno">
+      <option value="Matutino">Matutino</option>
+      <option value="Vespertino">Vespertino</option>
+      <option value="Nocturno">Nocturno</option>
+    </select>
+    <button onclick="addTrabajadorInterno()">Agregar</button>
+    <div id="err_trabajadorInterno" class="error"></div>
+    <table>
+      <thead><tr><th>ID Trabajador</th><th>Turno</th><th>Eliminar</th></tr></thead>
+      <tbody id="t_trabajadorInterno"></tbody>
+    </table>
+  </div>
+
+  <!-- REPARTIDOR CONSEGUIDOR -->
+  <div id="repartidor" class="section">
+    <h2>RepartidorConseguidor</h2>
+    <input id="rep_id" type="number" placeholder="ID Trabajador">
+    <button onclick="addRepartidor()">Agregar</button>
+    <div id="err_repartidor" class="error"></div>
+    <table>
+      <thead><tr><th>ID Trabajador</th><th>Eliminar</th></tr></thead>
+      <tbody id="t_repartidor"></tbody>
+    </table>
+  </div>
+
+  <!-- COMPRA -->
+  <div id="compra" class="section">
+    <h2>Compra</h2>
+    <input id="co_cliente" type="number" placeholder="ID Cliente">
+    <input id="co_fecha" type="date">
+    <input id="co_total" type="number" placeholder="Total">
+    <button onclick="addCompra()">Agregar</button>
+    <div id="err_compra" class="error"></div>
+    <table>
+      <thead><tr><th>ID</th><th>ID Cliente</th><th>Fecha</th><th>Total</th><th>Eliminar</th></tr></thead>
+      <tbody id="t_compra"></tbody>
+    </table>
+  </div>
+
+  <!-- DETALLE COMPRA -->
+  <div id="detalle" class="section">
+    <h2>DetalleCompra</h2>
+    <input id="d_compra" type="number" placeholder="ID Compra">
+    <input id="d_producto" type="number" placeholder="ID Producto">
+    <input id="d_cantidad" type="number" placeholder="Cantidad">
+    <input id="d_precio" type="number" placeholder="Precio Unitario">
+    <button onclick="addDetalle()">Agregar</button>
+    <div id="err_detalle" class="error"></div>
+    <table>
+      <thead><tr><th>ID Compra</th><th>ID Producto</th><th>Cantidad</th><th>Precio Unitario</th><th>Subtotal</th><th>Eliminar</th></tr></thead>
+      <tbody id="t_detalle"></tbody>
+    </table>
+  </div>
+
+  <!-- SUMINISTRO -->
+  <div id="suministro" class="section">
+    <h2>Suministro</h2>
+    <input id="s_distrib" type="number" placeholder="ID Distribuidora">
+    <input id="s_proveedor" type="number" placeholder="ID Proveedor">
+    <input id="s_producto" type="number" placeholder="ID Producto">
+    <input id="s_fecha" type="date">
+    <input id="s_cantidad" type="number" placeholder="Cantidad Recibida">
+    <input id="s_precio_adq" type="number" placeholder="Precio de Adquisición">
+    <button onclick="addSuministro()">Agregar</button>
+    <div id="err_suministro" class="error"></div>
+    <table>
+      <thead><tr><th>ID Distribuidora</th><th>ID Proveedor</th><th>ID Producto</th><th>Fecha</th><th>Cantidad</th><th>Precio Adq.</th><th>Eliminar</th></tr></thead>
+      <tbody id="t_suministro"></tbody>
+    </table>
+  </div>
+
+  <!-- TELEFONOS CLIENTE -->
+  <div id="telCliente" class="section">
+    <h2>Telefonos_Cliente</h2>
+    <input id="tc_id" type="number" placeholder="ID Cliente">
+    <input id="tc_tel" placeholder="Teléfono (mín. 10 dígitos)" maxlength="15">
+    <button onclick="addTelCliente()">Agregar</button>
+    <div id="err_telCliente" class="error"></div>
+    <table>
+      <thead><tr><th>ID</th><th>ID Cliente</th><th>Teléfono</th><th>Eliminar</th></tr></thead>
+      <tbody id="t_telCliente"></tbody>
+    </table>
+  </div>
+
+  <!-- TELEFONOS TRABAJADOR -->
+  <div id="telTrabajador" class="section">
+    <h2>Telefonos_Trabajador</h2>
+    <input id="tt_id" type="number" placeholder="ID Trabajador">
+    <input id="tt_tel" placeholder="Teléfono" maxlength="15">
+    <button onclick="addTelTrabajador()">Agregar</button>
+    <div id="err_telTrabajador" class="error"></div>
+    <table>
+      <thead><tr><th>ID</th><th>ID Trabajador</th><th>Teléfono</th><th>Eliminar</th></tr></thead>
+      <tbody id="t_telTrabajador"></tbody>
+    </table>
+  </div>
 
 </div>
 
 <script>
-function show(id){ document.querySelectorAll('.section').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+const API = 'http://localhost:3000/api';
 
-function addCliente(){ let n=c_nombre.value, c=c_ciudad.value, t=c_tipo.value; if(!n||!c) return; t_cliente.innerHTML+=`<tr><td>${n}</td><td>${c}</td><td>${t}</td></tr>`; }
+// ── NAV ──────────────────────────────────────────────────────────────────────
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 
-function addProducto(){ let n=p_nombre.value, pr=p_precio.value, s=p_stock.value; if(!n) return; t_producto.innerHTML+=`<tr><td>${n}</td><td>${pr}</td><td>${s}</td></tr>`; }
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+function v(id) { return document.getElementById(id).value.trim(); }
 
-function addProveedor(){ let n=pr_nombre.value, c=pr_contacto.value; if(!n) return; t_proveedor.innerHTML+=`<tr><td>${n}</td><td>${c}</td></tr>`; }
+function setErr(key, msg) {
+  const el = document.getElementById('err_' + key);
+  if (el) el.textContent = msg || '';
+}
 
-function addTrabajador(){ let n=t_nombre.value, s=t_sueldo.value; if(!n) return; t_trabajador.innerHTML+=`<tr><td>${n}</td><td>${s}</td></tr>`; }
+async function apiPost(endpoint, body) {
+  const res = await fetch(API + endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Error al guardar');
+  return data;
+}
 
-function addCompra(){ let c=co_cliente.value, o=co_orden.value; if(!c) return; t_compra.innerHTML+=`<tr><td>${c}</td><td>${o}</td></tr>`; }
+async function apiGet(endpoint) {
+  const res = await fetch(API + endpoint);
+  return res.json();
+}
 
-function addDetalle(){ let c=d_compra.value, p=d_producto.value, ca=d_cantidad.value; if(!c||!p) return; t_detalle.innerHTML+=`<tr><td>${c}</td><td>${p}</td><td>${ca}</td></tr>`; }
+async function apiDelete(endpoint) {
+  await fetch(API + endpoint, { method: 'DELETE' });
+}
 
-function addSuministro(){ let pr=s_proveedor.value, p=s_producto.value, c=s_cantidad.value; if(!pr) return; t_suministro.innerHTML+=`<tr><td>${pr}</td><td>${p}</td><td>${c}</td></tr>`; }
+function delBtn(onclick) {
+  return `<td><button onclick="${onclick}" style="background:#e74c3c;color:white;border:none;padding:4px 10px;cursor:pointer;">X</button></td>`;
+}
+
+// ── FECHA HOY ────────────────────────────────────────────────────────────────
+document.querySelectorAll('input[type="date"]').forEach(el => {
+  el.value = new Date().toISOString().split('T')[0];
+});
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// DISTRIBUIDORA
+// ════════════════════════════════════════════════════════════════════════════
+async function cargarDistribuidora() {
+  const rows = await apiGet('/distribuidora');
+  const tb = document.getElementById('t_distribuidora');
+  tb.innerHTML = '';
+  rows.forEach(r => {
+    tb.innerHTML += `<tr>
+      <td>${r.nombre}</td><td>${r.rfc}</td><td>${r.dir_calle_ciudad}</td>
+      <td>${r.dir_cp}</td><td>${r.telefono||''}</td><td>${r.correo||''}</td>
+      ${delBtn(`delDistribuidora(${r.id_distribuidora})`)}
+    </tr>`;
+  });
+}
+async function addDistribuidora() {
+  setErr('distribuidora', '');
+  try {
+    await apiPost('/distribuidora', {
+      nombre: v('dis_nombre'), rfc: v('dis_rfc'),
+      dir_calle_ciudad: v('dis_dir'), dir_cp: v('dis_cp'),
+      telefono: v('dis_tel'), correo: v('dis_correo')
+    });
+    ['dis_nombre','dis_rfc','dis_dir','dis_cp','dis_tel','dis_correo'].forEach(id => document.getElementById(id).value='');
+    cargarDistribuidora();
+  } catch(e) { setErr('distribuidora', e.message); }
+}
+async function delDistribuidora(id) {
+  await apiDelete('/distribuidora/' + id);
+  cargarDistribuidora();
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// CLIENTE
+// ════════════════════════════════════════════════════════════════════════════
+async function cargarCliente() {
+  const rows = await apiGet('/cliente');
+  const tb = document.getElementById('t_cliente');
+  tb.innerHTML = '';
+  rows.forEach(r => {
+    tb.innerHTML += `<tr>
+      <td>${r.id_cliente}</td><td>${r.nombre}</td><td>${r.dir_calle_ciudad||''}</td>
+      <td>${r.dir_cp||''}</td><td>${r.correo||''}</td><td>${r.tipo_cliente}</td><td>${r.tipo_atencion}</td>
+      ${delBtn(`delCliente(${r.id_cliente})`)}
+    </tr>`;
+  });
+}
+async function addCliente() {
+  setErr('cliente', '');
+  try {
+    await apiPost('/cliente', {
+      nombre: v('c_nombre'), dir_calle_ciudad: v('c_dir'),
+      dir_cp: v('c_cp'), correo: v('c_correo'),
+      tipo_cliente: v('c_tipo'), tipo_atencion: v('c_atencion')
+    });
+    ['c_nombre','c_dir','c_cp','c_correo'].forEach(id => document.getElementById(id).value='');
+    cargarCliente();
+  } catch(e) { setErr('cliente', e.message); }
+}
+async function delCliente(id) {
+  await apiDelete('/cliente/' + id);
+  cargarCliente();
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// CLIENTE CON FACTURA
+// ════════════════════════════════════════════════════════════════════════════
+async function cargarClienteFactura() {
+  const rows = await apiGet('/clientefactura');
+  const tb = document.getElementById('t_clienteFactura');
+  tb.innerHTML = '';
+  rows.forEach(r => {
+    tb.innerHTML += `<tr>
+      <td>${r.id_cliente}</td><td>${r.rfc}</td>
+      ${delBtn(`delClienteFactura(${r.id_cliente})`)}
+    </tr>`;
+  });
+}
+async function addClienteFactura() {
+  setErr('clienteFactura', '');
+  try {
+    await apiPost('/clientefactura', { id_cliente: v('cf_id'), rfc: v('cf_rfc') });
+    ['cf_id','cf_rfc'].forEach(id => document.getElementById(id).value='');
+    cargarClienteFactura();
+  } catch(e) { setErr('clienteFactura', e.message); }
+}
+async function delClienteFactura(id) {
+  await apiDelete('/clientefactura/' + id);
+  cargarClienteFactura();
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// CLIENTE SIN FACTURA
+// ════════════════════════════════════════════════════════════════════════════
+async function cargarClienteSinFactura() {
+  const rows = await apiGet('/clientesinfactura');
+  const tb = document.getElementById('t_clienteSinFactura');
+  tb.innerHTML = '';
+  rows.forEach(r => {
+    tb.innerHTML += `<tr>
+      <td>${r.id_cliente}</td>
+      ${delBtn(`delClienteSinFactura(${r.id_cliente})`)}
+    </tr>`;
+  });
+}
+async function addClienteSinFactura() {
+  setErr('clienteSinFactura', '');
+  try {
+    await apiPost('/clientesinfactura', { id_cliente: v('csf_id') });
+    document.getElementById('csf_id').value = '';
+    cargarClienteSinFactura();
+  } catch(e) { setErr('clienteSinFactura', e.message); }
+}
+async function delClienteSinFactura(id) {
+  await apiDelete('/clientesinfactura/' + id);
+  cargarClienteSinFactura();
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// PROVEEDOR
+// ════════════════════════════════════════════════════════════════════════════
+async function cargarProveedor() {
+  const rows = await apiGet('/proveedor');
+  const tb = document.getElementById('t_proveedor');
+  tb.innerHTML = '';
+  rows.forEach(r => {
+    tb.innerHTML += `<tr>
+      <td>${r.id_proveedor}</td><td>${r.nombre}</td><td>${r.rfc}</td><td>${r.contacto}</td>
+      ${delBtn(`delProveedor(${r.id_proveedor})`)}
+    </tr>`;
+  });
+}
+async function addProveedor() {
+  setErr('proveedor', '');
+  try {
+    await apiPost('/proveedor', { nombre: v('pr_nombre'), rfc: v('pr_rfc'), contacto: v('pr_contacto') });
+    ['pr_nombre','pr_rfc','pr_contacto'].forEach(id => document.getElementById(id).value='');
+    cargarProveedor();
+  } catch(e) { setErr('proveedor', e.message); }
+}
+async function delProveedor(id) {
+  await apiDelete('/proveedor/' + id);
+  cargarProveedor();
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// PRODUCTO
+// ════════════════════════════════════════════════════════════════════════════
+async function cargarProducto() {
+  const rows = await apiGet('/producto');
+  const tb = document.getElementById('t_producto');
+  tb.innerHTML = '';
+  rows.forEach(r => {
+    tb.innerHTML += `<tr>
+      <td>${r.id_producto}</td><td>${r.nombre}</td><td>${r.codigo_barras||''}</td>
+      <td>${r.precio_venta}</td><td>${r.stock}</td>
+      ${delBtn(`delProducto(${r.id_producto})`)}
+    </tr>`;
+  });
+}
+async function addProducto() {
+  setErr('producto', '');
+  try {
+    await apiPost('/producto', {
+      nombre: v('p_nombre'), codigo_barras: v('p_codigo'),
+      precio_venta: v('p_precio'), stock: v('p_stock')
+    });
+    ['p_nombre','p_codigo','p_precio','p_stock'].forEach(id => document.getElementById(id).value='');
+    cargarProducto();
+  } catch(e) { setErr('producto', e.message); }
+}
+async function delProducto(id) {
+  await apiDelete('/producto/' + id);
+  cargarProducto();
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// TRABAJADOR
+// ════════════════════════════════════════════════════════════════════════════
+async function cargarTrabajador() {
+  const rows = await apiGet('/trabajador');
+  const tb = document.getElementById('t_trabajador');
+  tb.innerHTML = '';
+  rows.forEach(r => {
+    tb.innerHTML += `<tr>
+      <td>${r.id_trabajador}</td><td>${r.nombre}</td><td>${r.curp||''}</td>
+      <td>${r.sueldo}</td><td>${r.id_distribuidora}</td>
+      ${delBtn(`delTrabajador(${r.id_trabajador})`)}
+    </tr>`;
+  });
+}
+async function addTrabajador() {
+  setErr('trabajador', '');
+  try {
+    await apiPost('/trabajador', {
+      nombre: v('tr_nombre'), curp: v('tr_curp'),
+      sueldo: v('tr_sueldo'), id_distribuidora: v('tr_distrib')
+    });
+    ['tr_nombre','tr_curp','tr_sueldo','tr_distrib'].forEach(id => document.getElementById(id).value='');
+    cargarTrabajador();
+  } catch(e) { setErr('trabajador', e.message); }
+}
+async function delTrabajador(id) {
+  await apiDelete('/trabajador/' + id);
+  cargarTrabajador();
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// TRABAJADOR INTERNO
+// ════════════════════════════════════════════════════════════════════════════
+async function cargarTrabajadorInterno() {
+  const rows = await apiGet('/trabajadorinterno');
+  const tb = document.getElementById('t_trabajadorInterno');
+  tb.innerHTML = '';
+  rows.forEach(r => {
+    tb.innerHTML += `<tr>
+      <td>${r.id_trabajador}</td><td>${r.turno}</td>
+      ${delBtn(`delTrabajadorInterno(${r.id_trabajador})`)}
+    </tr>`;
+  });
+}
+async function addTrabajadorInterno() {
+  setErr('trabajadorInterno', '');
+  try {
+    await apiPost('/trabajadorinterno', { id_trabajador: v('ti_id'), turno: v('ti_turno') });
+    document.getElementById('ti_id').value = '';
+    cargarTrabajadorInterno();
+  } catch(e) { setErr('trabajadorInterno', e.message); }
+}
+async function delTrabajadorInterno(id) {
+  await apiDelete('/trabajadorinterno/' + id);
+  cargarTrabajadorInterno();
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// REPARTIDOR
+// ════════════════════════════════════════════════════════════════════════════
+async function cargarRepartidor() {
+  const rows = await apiGet('/repartidor');
+  const tb = document.getElementById('t_repartidor');
+  tb.innerHTML = '';
+  rows.forEach(r => {
+    tb.innerHTML += `<tr>
+      <td>${r.id_trabajador}</td>
+      ${delBtn(`delRepartidor(${r.id_trabajador})`)}
+    </tr>`;
+  });
+}
+async function addRepartidor() {
+  setErr('repartidor', '');
+  try {
+    await apiPost('/repartidor', { id_trabajador: v('rep_id') });
+    document.getElementById('rep_id').value = '';
+    cargarRepartidor();
+  } catch(e) { setErr('repartidor', e.message); }
+}
+async function delRepartidor(id) {
+  await apiDelete('/repartidor/' + id);
+  cargarRepartidor();
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// COMPRA
+// ════════════════════════════════════════════════════════════════════════════
+async function cargarCompra() {
+  const rows = await apiGet('/compra');
+  const tb = document.getElementById('t_compra');
+  tb.innerHTML = '';
+  rows.forEach(r => {
+    tb.innerHTML += `<tr>
+      <td>${r.id_compra}</td><td>${r.id_cliente}</td><td>${r.fecha}</td><td>${r.total}</td>
+      ${delBtn(`delCompra(${r.id_compra})`)}
+    </tr>`;
+  });
+}
+async function addCompra() {
+  setErr('compra', '');
+  try {
+    await apiPost('/compra', {
+      id_cliente: v('co_cliente'), fecha: v('co_fecha'), total: v('co_total')
+    });
+    ['co_cliente','co_total'].forEach(id => document.getElementById(id).value='');
+    cargarCompra();
+  } catch(e) { setErr('compra', e.message); }
+}
+async function delCompra(id) {
+  await apiDelete('/compra/' + id);
+  cargarCompra();
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// DETALLE COMPRA
+// ════════════════════════════════════════════════════════════════════════════
+async function cargarDetalle() {
+  const rows = await apiGet('/detalle');
+  const tb = document.getElementById('t_detalle');
+  tb.innerHTML = '';
+  rows.forEach(r => {
+    tb.innerHTML += `<tr>
+      <td>${r.id_compra}</td><td>${r.id_producto}</td><td>${r.cantidad}</td>
+      <td>${r.precio_unitario}</td><td>${r.subtotal}</td>
+      ${delBtn(`delDetalle(${r.id_compra},${r.id_producto})`)}
+    </tr>`;
+  });
+}
+async function addDetalle() {
+  setErr('detalle', '');
+  try {
+    await apiPost('/detalle', {
+      id_compra: v('d_compra'), id_producto: v('d_producto'),
+      cantidad: v('d_cantidad'), precio_unitario: v('d_precio')
+    });
+    ['d_compra','d_producto','d_cantidad','d_precio'].forEach(id => document.getElementById(id).value='');
+    cargarDetalle();
+  } catch(e) { setErr('detalle', e.message); }
+}
+async function delDetalle(comp, prod) {
+  await apiDelete(`/detalle/${comp}/${prod}`);
+  cargarDetalle();
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// SUMINISTRO
+// ════════════════════════════════════════════════════════════════════════════
+async function cargarSuministro() {
+  const rows = await apiGet('/suministro');
+  const tb = document.getElementById('t_suministro');
+  tb.innerHTML = '';
+  rows.forEach(r => {
+    tb.innerHTML += `<tr>
+      <td>${r.id_distribuidora}</td><td>${r.id_proveedor}</td><td>${r.id_producto}</td>
+      <td>${r.fecha_suministro}</td><td>${r.cantidad_recibida}</td><td>${r.precio_adquisicion}</td>
+      ${delBtn(`delSuministro(${r.id_distribuidora},${r.id_proveedor},${r.id_producto},'${r.fecha_suministro}')`)}
+    </tr>`;
+  });
+}
+async function addSuministro() {
+  setErr('suministro', '');
+  try {
+    await apiPost('/suministro', {
+      id_distribuidora: v('s_distrib'), id_proveedor: v('s_proveedor'),
+      id_producto: v('s_producto'), fecha_suministro: v('s_fecha'),
+      cantidad_recibida: v('s_cantidad'), precio_adquisicion: v('s_precio_adq')
+    });
+    ['s_distrib','s_proveedor','s_producto','s_cantidad','s_precio_adq'].forEach(id => document.getElementById(id).value='');
+    cargarSuministro();
+  } catch(e) { setErr('suministro', e.message); }
+}
+async function delSuministro(dis, prov, prod, fecha) {
+  await apiDelete(`/suministro/${dis}/${prov}/${prod}/${fecha}`);
+  cargarSuministro();
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// TELEFONOS CLIENTE
+// ════════════════════════════════════════════════════════════════════════════
+async function cargarTelCliente() {
+  const rows = await apiGet('/telcliente');
+  const tb = document.getElementById('t_telCliente');
+  tb.innerHTML = '';
+  rows.forEach(r => {
+    tb.innerHTML += `<tr>
+      <td>${r.id}</td><td>${r.id_cliente}</td><td>${r.telefono}</td>
+      ${delBtn(`delTelCliente(${r.id})`)}
+    </tr>`;
+  });
+}
+async function addTelCliente() {
+  setErr('telCliente', '');
+  try {
+    await apiPost('/telcliente', { id_cliente: v('tc_id'), telefono: v('tc_tel') });
+    ['tc_id','tc_tel'].forEach(id => document.getElementById(id).value='');
+    cargarTelCliente();
+  } catch(e) { setErr('telCliente', e.message); }
+}
+async function delTelCliente(id) {
+  await apiDelete('/telcliente/' + id);
+  cargarTelCliente();
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// TELEFONOS TRABAJADOR
+// ════════════════════════════════════════════════════════════════════════════
+async function cargarTelTrabajador() {
+  const rows = await apiGet('/teltrabajador');
+  const tb = document.getElementById('t_telTrabajador');
+  tb.innerHTML = '';
+  rows.forEach(r => {
+    tb.innerHTML += `<tr>
+      <td>${r.id}</td><td>${r.id_trabajador}</td><td>${r.telefono}</td>
+      ${delBtn(`delTelTrabajador(${r.id})`)}
+    </tr>`;
+  });
+}
+async function addTelTrabajador() {
+  setErr('telTrabajador', '');
+  try {
+    await apiPost('/teltrabajador', { id_trabajador: v('tt_id'), telefono: v('tt_tel') });
+    ['tt_id','tt_tel'].forEach(id => document.getElementById(id).value='');
+    cargarTelTrabajador();
+  } catch(e) { setErr('telTrabajador', e.message); }
+}
+async function delTelTrabajador(id) {
+  await apiDelete('/teltrabajador/' + id);
+  cargarTelTrabajador();
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// CARGA INICIAL — trae todos los datos al abrir la página
+// ════════════════════════════════════════════════════════════════════════════
+cargarDistribuidora();
+cargarCliente();
+cargarClienteFactura();
+cargarClienteSinFactura();
+cargarProveedor();
+cargarProducto();
+cargarTrabajador();
+cargarTrabajadorInterno();
+cargarRepartidor();
+cargarCompra();
+cargarDetalle();
+cargarSuministro();
+cargarTelCliente();
+cargarTelTrabajador();
 </script>
 
 </body>
