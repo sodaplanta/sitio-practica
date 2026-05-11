@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
@@ -9,11 +11,11 @@ app.use(express.static('.'));  // sirve index.html desde la misma carpeta
 
 // ── CONFIGURA TU CONEXIÓN AQUÍ ──────────────────────────────────────────────
 const pool = new Pool({
-  host:     'localhost',   // o la IP de tu servidor PostgreSQL
-  port:     5432,
-  database: 'distribuidora_db',   // cambia al nombre de tu base de datos
-  user:     'postgres',   // cambia a tu usuario
-  password: 'basesdedatoserick'        // cambia a tu contraseña
+  host:     process.env.DB_HOST,
+  port:     process.env.DB_PORT,
+  database: process.env.DB_NAME,
+  user:     process.env.DB_USER,
+  password: process.env.DB_PASSWORD
 });
 // ────────────────────────────────────────────────────────────────────────────
 
