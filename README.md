@@ -30,7 +30,7 @@ Sistema integral para la gestión de inventario, ventas y distribuicion de abarr
 <summary>🖼️ Login para consulta</summary>
 Usuario:
 consulta
-Contraseña:
+Contrasena:
 rdBg2yGGGR
 </details>
 
