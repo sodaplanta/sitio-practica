@@ -1,3 +1,5 @@
+---
+
 ## Proyecto 1: Distribuidora de Abarrotes Kafra
 
 Sistema integral para la gestión de inventario, ventas y distribuicion de abarrotes.
@@ -23,13 +25,12 @@ Sistema integral para la gestión de inventario, ventas y distribuicion de abarr
 ### 🔗 Enlaces
 * **Código Fuente:** [Repositorio en GitHub](https://github.com/DerekArenas/kafra-dashboard)
 * **Demo en Vivo (Github Pages):** [Pagina Distribuidora Kafra](https://derekarenas.github.io/kafra-dashboard/)
-* **Demo en Vivo (Render):** [Bazar Ropa Web](https://bazar-ropa-project-web.onrender.com/)
 
 <details>
 <summary>🖼️ Login para consulta</summary>
 Usuario:
 consulta
-Contrasena:
+Contraseña:
 rdBg2yGGGR
 </details>
 
