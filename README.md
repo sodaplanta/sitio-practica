@@ -25,6 +25,14 @@ Sistema integral para la gestión de inventario, ventas y distribuicion de abarr
 * **Demo en Vivo (Github Pages):** [Pagina Distribuidora Kafra](https://derekarenas.github.io/kafra-dashboard/)
 * **Demo en Vivo (Render):** [Bazar Ropa Web](https://bazar-ropa-project-web.onrender.com/)
 
+<details>
+<summary>🖼️ Login para consulta</summary>
+Usuario:
+consulta
+Contrasena:
+rdBg2yGGGR
+</details>
+
 ---
 
 Selección de Tecnologías y Despliegue del Sistema
