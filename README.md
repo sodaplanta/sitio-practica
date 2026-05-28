@@ -1,4 +1,6 @@
 <img width="771" height="668" alt="login" src="https://github.com/user-attachments/assets/4e5635a8-4fe3-4789-a8aa-ad3ef39d7300" />
+<img width="1918" height="908" alt="Pantalla inicial admin" src="https://github.com/user-attachments/assets/9317424e-674d-4877-a1bd-7e6cb287e254" />
+
 Selección de Tecnologías y Despliegue del Sistema
 Elección del Sistema Gestor de Base de Datos: PostgreSQL
 
