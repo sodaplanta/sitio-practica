@@ -1,4 +1,4 @@
-## Proyecto 1: Distribuidora de Abarrotes Kafra
+## Proyecto 2: Distribuidora de Abarrotes Kafra
 
 Sistema integral para la gestión de inventario, ventas y distribuicion de abarrotes.
 
@@ -26,9 +26,9 @@ Sistema integral para la gestión de inventario, ventas y distribuicion de abarr
 
 <details>
 <summary>🖼️ Login para consulta</summary>
-Usuario:
+User:
 consulta
-Contrasena:
+Password:
 rdBg2yGGGR
 </details>
 
