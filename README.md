@@ -18,6 +18,15 @@ Sistema integral para la gestión de inventario, ventas y distribuicion de abarr
 | <img loading="lazy" src="https://github.com/user-attachments/assets/9317424e-674d-4877-a1bd-7e6cb287e254" alt="Pantalla de inicio admin" width="800"/> | |
 | <img loading="lazy" src="https://github.com/user-attachments/assets/1d013572-cf13-4fa7-bd7a-c60fc9e334eb" alt="Detalles tabla trabajador" width="800"/> | |
 
+</details>
+
+### 🔗 Enlaces
+* **Código Fuente:** [Repositorio en GitHub](https://github.com/DerekArenas/kafra-dashboard)
+* **Demo en Vivo (Github Pages):** [Pagina Distribuidora Kafra](https://derekarenas.github.io/kafra-dashboard/)
+* **Demo en Vivo (Render):** [Bazar Ropa Web](https://bazar-ropa-project-web.onrender.com/)
+
+---
+
 Selección de Tecnologías y Despliegue del Sistema
 Elección del Sistema Gestor de Base de Datos: PostgreSQL
 
