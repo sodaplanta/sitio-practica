@@ -1,6 +1,22 @@
-<img width="771" height="668" alt="login" src="https://github.com/user-attachments/assets/4e5635a8-4fe3-4789-a8aa-ad3ef39d7300" />
-<img width="1918" height="908" alt="Pantalla inicial admin" src="https://github.com/user-attachments/assets/9317424e-674d-4877-a1bd-7e6cb287e254" />
-<img width="1918" height="876" alt="detalles trabajador" src="https://github.com/user-attachments/assets/1d013572-cf13-4fa7-bd7a-c60fc9e334eb" />
+## Proyecto 1: Distribuidora de Abarrotes Kafra
+
+Sistema integral para la gestión de inventario, ventas y distribuicion de abarrotes.
+
+### 🛠️ Tecnologías
+* **Backend:** Node.js y Express
+* **Base de Datos:** PostgreSQL 
+* **Frontend:** HTML, CSS y JavaScript
+* **Hosting del Frontend:** Github Pages
+* **Hosting de la base de datos y backend:** Render
+
+<details>
+<summary>🖼️ Ver capturas de pantalla</summary>
+
+| | |
+|---|---|
+| <img loading="lazy" src="https://github.com/user-attachments/assets/4e5635a8-4fe3-4789-a8aa-ad3ef39d7300" alt="Pantalla de login" width="800"/> | |
+| <img loading="lazy" src="https://github.com/user-attachments/assets/9317424e-674d-4877-a1bd-7e6cb287e254" alt="Pantalla de inicio admin" width="800"/> | |
+| <img loading="lazy" src="https://github.com/user-attachments/assets/1d013572-cf13-4fa7-bd7a-c60fc9e334eb" alt="Detalles tabla trabajador" width="800"/> | |
 
 Selección de Tecnologías y Despliegue del Sistema
 Elección del Sistema Gestor de Base de Datos: PostgreSQL
