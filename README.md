@@ -1,3 +1,4 @@
+<img width="771" height="668" alt="login" src="https://github.com/user-attachments/assets/4e5635a8-4fe3-4789-a8aa-ad3ef39d7300" />
 Selección de Tecnologías y Despliegue del Sistema
 Elección del Sistema Gestor de Base de Datos: PostgreSQL
 
