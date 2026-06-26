@@ -592,10 +592,9 @@
     z-index: 9999;
     background: var(--bg);
     display: flex;
-    align-items: center;
-    justify-content: center;
     font-family: var(--font-body);
     transition: opacity 0.4s ease;
+    overflow: hidden;
   }
 
   #loginOverlay.hidden {
@@ -603,59 +602,127 @@
     pointer-events: none;
   }
 
-  .login-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 40px 36px 32px;
-    width: 100%;
-    max-width: 380px;
+  /* ── Panel izquierdo: identidad / atmósfera ── */
+  .login-hero {
+    flex: 1.15;
+    position: relative;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 56px 60px;
+    background:
+      radial-gradient(circle at 18% 22%, rgba(232,201,109,0.10), transparent 42%),
+      radial-gradient(circle at 82% 78%, rgba(79,142,247,0.10), transparent 45%),
+      var(--surface);
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .login-hero-net {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+  }
+
+  .login-hero-net circle {
+    animation: nodePulse 3.6s ease-in-out infinite;
+  }
+  .login-hero-net circle:nth-child(2n) { animation-delay: 0.6s; }
+  .login-hero-net circle:nth-child(3n) { animation-delay: 1.2s; }
+  .login-hero-net circle:nth-child(5n) { animation-delay: 1.8s; }
+
+  @keyframes nodePulse {
+    0%, 100% { opacity: 0.35; r: 2.4; }
+    50%      { opacity: 1;    r: 3.6; }
+  }
+
+  .login-hero-net line {
+    stroke-dasharray: 4 5;
+    animation: dashFlow 9s linear infinite;
+  }
+
+  @keyframes dashFlow {
+    to { stroke-dashoffset: -180; }
+  }
+
+  .login-hero-top {
+    position: relative;
+    z-index: 2;
+    display: flex;
     align-items: center;
-    gap: 6px;
-    box-shadow: 0 24px 64px rgba(0,0,0,0.5);
-    animation: loginIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+    gap: 12px;
+  }
+
+  .login-hero-top .logo-mark {
+    width: 40px; height: 40px;
+    font-size: 19px;
+  }
+
+  .login-hero-top span {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.04em;
+    color: var(--text);
+  }
+
+  .login-hero-tagline {
+    position: relative;
+    z-index: 2;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 14px;
+    letter-spacing: 0.01em;
+  }
+
+  /* ── Panel derecho: formulario ── */
+  .login-form-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    min-width: 380px;
+  }
+
+  .login-box {
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    animation: loginIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
   }
 
   @keyframes loginIn {
-    from { opacity: 0; transform: translateY(24px) scale(0.97); }
-    to   { opacity: 1; transform: translateY(0)    scale(1);    }
-  }
-
-  .login-logo {
-    width: 52px; height: 52px;
-    background: var(--accent);
-    border-radius: 12px;
-    display: grid;
-    place-items: center;
-    font-family: var(--font-head);
-    font-weight: 800;
-    color: #0d0f14;
-    font-size: 26px;
-    margin-bottom: 8px;
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0);    }
   }
 
   .login-box h2 {
     font-family: var(--font-head);
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     color: var(--text);
-    margin-bottom: 2px;
+    margin-bottom: 4px;
   }
 
   .login-box p {
     font-size: 13px;
     color: var(--text-muted);
-    margin-bottom: 20px;
+    margin-bottom: 26px;
   }
 
   .login-field {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    margin-bottom: 12px;
+    gap: 6px;
+    margin-bottom: 14px;
   }
 
   .login-field label {
@@ -666,9 +733,23 @@
     color: var(--text-muted);
   }
 
+  .login-field .input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .login-field .input-wrap svg {
+    position: absolute;
+    left: 13px;
+    width: 15px; height: 15px;
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
   .login-field input {
     width: 100%;
-    padding: 10px 14px;
+    padding: 11px 14px 11px 38px;
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -684,10 +765,15 @@
     box-shadow: 0 0 0 3px rgba(79,142,247,0.12);
   }
 
+  .login-field input:focus + svg,
+  .login-field .input-wrap:has(input:focus) svg {
+    color: var(--accent2);
+  }
+
   .login-btn {
     width: 100%;
-    margin-top: 6px;
-    padding: 11px;
+    margin-top: 10px;
+    padding: 12px;
     background: var(--accent);
     color: #0d0f14;
     border: none;
@@ -697,6 +783,10 @@
     font-weight: 700;
     letter-spacing: 0.04em;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     transition: opacity 0.15s, transform 0.1s;
   }
 
@@ -706,12 +796,17 @@
   .login-error {
     color: #f87171;
     font-size: 12.5px;
-    margin-top: 8px;
+    margin-top: 10px;
     min-height: 18px;
     text-align: center;
   }
 
   body.login-active { overflow: hidden; }
+
+  @media (max-width: 880px) {
+    .login-hero { display: none; }
+    .login-form-panel { flex: 1; min-width: 0; }
+  }
 
   /* ─── KPI CARDS ──────────────────────────── */
   .kpi-grid {
@@ -804,26 +899,86 @@
 
 <body class="login-active">
 
+<!-- ─── LOGIN OVERLAY ─────────────────────────────── -->
 <div id="loginOverlay">
-  <div class="login-box">
-    <div class="login-logo">K</div>
-    <h2>Distribuidora Kafra</h2>
-    <p>Ingresa tus credenciales para continuar</p>
 
-    <div class="login-field">
-      <label>Usuario</label>
-      <input id="loginUser" type="text" placeholder="usuario" autocomplete="username"
-             onkeydown="if(event.key==='Enter') document.getElementById('loginPass').focus()"/>
-    </div>
-    <div class="login-field">
-      <label>Contraseña</label>
-      <input id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password"
-             onkeydown="if(event.key==='Enter') doLogin()"/>
-    </div>
+  <!-- Panel izquierdo: identidad de marca -->
+  <div class="login-hero">
+    <svg class="login-hero-net" viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice">
+      <g stroke="#e8c96d" stroke-width="1" fill="none" opacity="0.35">
+        <line x1="60" y1="120" x2="220" y2="60"/>
+        <line x1="220" y1="60" x2="380" y2="140"/>
+        <line x1="220" y1="60" x2="160" y2="240"/>
+        <line x1="380" y1="140" x2="520" y2="90"/>
+        <line x1="380" y1="140" x2="430" y2="300"/>
+        <line x1="160" y1="240" x2="60" y2="380"/>
+        <line x1="160" y1="240" x2="300" y2="340"/>
+        <line x1="300" y1="340" x2="430" y2="300"/>
+        <line x1="300" y1="340" x2="250" y2="500"/>
+        <line x1="430" y1="300" x2="540" y2="430"/>
+        <line x1="60" y1="380" x2="120" y2="540"/>
+        <line x1="250" y1="500" x2="120" y2="540"/>
+        <line x1="250" y1="500" x2="350" y2="620"/>
+        <line x1="350" y1="620" x2="540" y2="430"/>
+        <line x1="120" y1="540" x2="200" y2="700"/>
+        <line x1="350" y1="620" x2="300" y2="760"/>
+      </g>
+      <g fill="#e8c96d">
+        <circle cx="60" cy="120" r="3"/>
+        <circle cx="220" cy="60" r="3"/>
+        <circle cx="380" cy="140" r="3"/>
+        <circle cx="160" cy="240" r="3"/>
+        <circle cx="520" cy="90" r="3"/>
+        <circle cx="430" cy="300" r="3"/>
+        <circle cx="60" cy="380" r="3"/>
+        <circle cx="300" cy="340" r="3"/>
+        <circle cx="540" cy="430" r="3"/>
+        <circle cx="250" cy="500" r="3"/>
+        <circle cx="120" cy="540" r="3"/>
+        <circle cx="350" cy="620" r="3"/>
+        <circle cx="200" cy="700" r="3"/>
+        <circle cx="300" cy="760" r="3"/>
+      </g>
+    </svg>
 
-    <button class="login-btn" onclick="doLogin()">Iniciar sesión →</button>
-    <div class="login-error" id="loginError"></div>
+    <div class="login-hero-top">
+      <div class="logo-mark">K</div>
+      <span>Distribuidora <span style="color:var(--accent)">Kafra</span></span>
+    </div>
+    <p class="login-hero-tagline">Sistema interno de inventario y ventas</p>
   </div>
+
+  <!-- Panel derecho: formulario -->
+  <div class="login-form-panel">
+    <div class="login-box">
+      <h2>Iniciar sesión</h2>
+      <p>Ingresa tus credenciales para continuar</p>
+
+      <div class="login-field">
+        <label>Usuario</label>
+        <div class="input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <input id="loginUser" type="text" placeholder="usuario" autocomplete="username"
+                 onkeydown="if(event.key==='Enter') document.getElementById('loginPass').focus()"/>
+        </div>
+      </div>
+      <div class="login-field">
+        <label>Contraseña</label>
+        <div class="input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <input id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password"
+                 onkeydown="if(event.key==='Enter') doLogin()"/>
+        </div>
+      </div>
+
+      <button class="login-btn" onclick="doLogin()">
+        <span class="login-btn-text">Iniciar sesión</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+      </button>
+      <div class="login-error" id="loginError"></div>
+    </div>
+  </div>
+
 </div>
 
 <header>
@@ -894,6 +1049,7 @@
 
   <main>
 
+    <!-- INICIO -->
     <div id="inicio" class="section active">
       <div class="welcome-banner">
         <div>
@@ -966,6 +1122,7 @@
       </div>
     </div>
 
+    <!-- CLIENTE -->
     <div id="cliente" class="section">
       <div class="section-header"><h2>👤 Cliente <span class="badge">Clientes</span></h2></div>
       <div class="form-card">
@@ -1002,6 +1159,7 @@
       </div>
     </div>
 
+    <!-- CLIENTE CON FACTURA -->
     <div id="clienteFactura" class="section">
       <div class="section-header"><h2>🧾 Cliente Con Factura <span class="badge">Clientes</span></h2></div>
       <div class="form-card">
@@ -1021,6 +1179,7 @@
       </div>
     </div>
 
+    <!-- CLIENTE SIN FACTURA -->
     <div id="clienteSinFactura" class="section">
       <div class="section-header"><h2>📋 Cliente Sin Factura <span class="badge">Clientes</span></h2></div>
       <div class="form-card">
@@ -1039,6 +1198,7 @@
       </div>
     </div>
 
+    <!-- PROVEEDOR -->
     <div id="proveedor" class="section">
       <div class="section-header"><h2>🏭 Proveedor <span class="badge">Proveedores</span></h2></div>
       <div class="form-card">
@@ -1059,6 +1219,7 @@
       </div>
     </div>
 
+    <!-- PRODUCTO -->
     <div id="producto" class="section">
       <div class="section-header"><h2>🛒 Producto <span class="badge">Inventario</span></h2></div>
       <div class="form-card">
@@ -1080,6 +1241,7 @@
       </div>
     </div>
 
+    <!-- TRABAJADOR -->
     <div id="trabajador" class="section">
       <div class="section-header"><h2>👷 Trabajador <span class="badge">Personal</span></h2></div>
       <div class="form-card">
@@ -1122,6 +1284,7 @@
       </div>
     </div>
 
+    <!-- TRABAJADOR INTERNO -->
     <div id="trabajadorInterno" class="section">
       <div class="section-header"><h2>🏠 Trabajador Interno <span class="badge">Personal</span></h2></div>
       <div class="form-card">
@@ -1145,6 +1308,7 @@
       </div>
     </div>
 
+    <!-- REPARTIDOR -->
     <div id="repartidor" class="section">
       <div class="section-header"><h2>🚚 Repartidor Conseguidor <span class="badge">Personal</span></h2></div>
       <div class="form-card">
@@ -1163,6 +1327,7 @@
       </div>
     </div>
 
+    <!-- COMPRA -->
     <div id="compra" class="section">
       <div class="section-header"><h2>💳 Compra <span class="badge">Inventario</span></h2></div>
       <div class="form-card">
@@ -1183,6 +1348,7 @@
       </div>
     </div>
 
+    <!-- DETALLE COMPRA -->
     <div id="detalle" class="section">
       <div class="section-header"><h2>📝 Detalle Compra <span class="badge">Inventario</span></h2></div>
       <div class="form-card">
@@ -1204,6 +1370,7 @@
       </div>
     </div>
 
+    <!-- SUMINISTRO -->
     <div id="suministro" class="section">
       <div class="section-header"><h2>📦 Suministro <span class="badge">Proveedores</span></h2></div>
       <div class="form-card">
@@ -1227,6 +1394,7 @@
       </div>
     </div>
 
+    <!-- TELEFONOS CLIENTE -->
     <div id="telCliente" class="section">
       <div class="section-header"><h2>📞 Teléfonos Cliente <span class="badge">Teléfonos</span></h2></div>
       <div class="form-card">
@@ -1246,6 +1414,7 @@
       </div>
     </div>
 
+    <!-- TELEFONOS TRABAJADOR -->
     <div id="telTrabajador" class="section">
       <div class="section-header"><h2>📱 Teléfonos Trabajador <span class="badge">Teléfonos</span></h2></div>
       <div class="form-card">
@@ -1269,61 +1438,236 @@
 </div>
 
 <script>
-// ─── BASE DE DATOS MOCK EN MEMORIA ──────────────────────────────
-let mockDB = {
-  cliente: [
-    { id_cliente: 1, nombre: "Abarrotes Doña Mari", dir_calle_ciudad: "Zócalo", dir_cp: "06000", correo: "mari@gmail.com", tipo_cliente: "Sin factura", tipo_atencion: "Mostrador" },
-    { id_cliente: 2, nombre: "Juan Pérez", dir_calle_ciudad: "Av. Chapultepec", dir_cp: "06600", correo: "juan@empresa.com", tipo_cliente: "Con factura", tipo_atencion: "Domicilio" }
+// ── BASE DE DATOS EN MEMORIA ──────────────────────────────────────────────────
+const DB = {
+  usuarios: [
+    { usuario: 'admin',       password: '123', rol: 'admin',       nombre: 'Administrador' },
+    { usuario: 'gerente',     password: '123', rol: 'gerente',     nombre: 'Gerente' },
+    { usuario: 'vendedor',    password: '123', rol: 'vendedor',    nombre: 'Vendedor' },
+    { usuario: 'almacenista', password: '123', rol: 'almacenista', nombre: 'Almacenista' },
+    { usuario: 'repartidor',  password: '123', rol: 'repartidor',  nombre: 'Repartidor' },
+    { usuario: 'consulta',    password: '123', rol: 'consulta',    nombre: 'Consulta' },
   ],
-  clientefactura: [
-    { id_cliente: 2, rfc: "JUAN123456789" }
+  clientes: [
+    { id_cliente: 1, nombre: 'Juan Pérez', dir_calle_ciudad: 'Av. Insurgentes 123, CDMX', dir_cp: '06600', correo: 'juan@example.com', tipo_cliente: 'Sin factura', tipo_atencion: 'Mostrador' },
+    { id_cliente: 2, nombre: 'Empresa SA de CV', dir_calle_ciudad: 'Reforma 500, CDMX', dir_cp: '06700', correo: 'empresa@example.com', tipo_cliente: 'Con factura', tipo_atencion: 'Mayoreo' },
   ],
-  clientesinfactura: [
-    { id_cliente: 1 }
+  clienteFactura: [
+    { id_cliente: 2, rfc: 'EMP930512XY3' },
   ],
-  proveedor: [
-    { id_proveedor: 1, nombre: "Coca Cola FEMSA", rfc: "KOF9303014A1", contacto: "Carlos Rodríguez" }
+  clienteSinFactura: [
+    { id_cliente: 1 },
   ],
-  producto: [
-    { id_producto: 1, nombre: "Coca Cola 3L", codigo_barras: "7501000111222", precio_venta: 48.50, stock: 45 },
-    { id_producto: 2, nombre: "Gansito", codigo_barras: "7501034567890", precio_venta: 22.00, stock: 8 },
-    { id_producto: 3, nombre: "Doritos Nacho", codigo_barras: "7501056781234", precio_venta: 18.00, stock: 2 }
+  proveedores: [
+    { id_proveedor: 1, nombre: 'Distribuidora Central', rfc: 'DIC900101ABC', contacto: 'contacto@central.com' },
   ],
-  trabajador: [
-    { id_trabajador: 1, nombre: "Ana López", curp: "ANAL123456HDFR01", sueldo: 6500, id_distribuidora: 1, tipo_trabajador: "interno" },
-    { id_trabajador: 2, nombre: "Pedro Martínez", curp: "PEDM987654HDFR02", sueldo: 5000, id_distribuidora: 1, tipo_trabajador: "repartidor" }
+  productos: [
+    { id_producto: 1, nombre: 'Refresco Cola 600ml', codigo_barras: '7501234567890', precio_venta: 18.50, stock: 120 },
+    { id_producto: 2, nombre: 'Agua Natural 1L',     codigo_barras: '7509876543210', precio_venta: 12.00, stock: 8 },
+    { id_producto: 3, nombre: 'Jugo de Naranja 1L',  codigo_barras: '7501111111111', precio_venta: 22.00, stock: 3 },
   ],
-  trabajadorinterno: [
-    { id_trabajador: 1, turno: "Matutino" }
+  trabajadores: [
+    { id_trabajador: 1, nombre: 'Carlos López',   curp: 'LOPC850101HDFXXX01', sueldo: 8500, id_distribuidora: 1 },
+    { id_trabajador: 2, nombre: 'María Gómez',    curp: 'GOPM900215MDFXXX02', sueldo: 9200, id_distribuidora: 1 },
   ],
-  repartidor: [
-    { id_trabajador: 2, zona_reparto: "Centro Histórico", tipo_vehiculo: "Motocicleta" }
+  trabajadorInterno: [
+    { id_trabajador: 1, turno: 'Matutino' },
   ],
-  compra: [
-    { id_compra: 1, id_cliente: 1, fecha: "2023-10-15", total: 115.00 }
+  repartidores: [
+    { id_trabajador: 2, zona_reparto: 'Norte', tipo_vehiculo: 'Motocicleta' },
+  ],
+  compras: [
+    { id_compra: 1, id_cliente: 1, fecha: '2025-06-01', total: 185.00 },
+    { id_compra: 2, id_cliente: 2, fecha: '2025-06-15', total: 4400.00 },
   ],
   detalle: [
-    { id_compra: 1, id_producto: 1, cantidad: 2, precio_unitario: 48.50, subtotal: 97.00 },
-    { id_compra: 1, id_producto: 3, cantidad: 1, precio_unitario: 18.00, subtotal: 18.00 }
+    { id_compra: 1, id_producto: 1, cantidad: 10, precio_unitario: 18.50, subtotal: 185.00 },
+    { id_compra: 2, id_producto: 3, cantidad: 200, precio_unitario: 22.00, subtotal: 4400.00 },
   ],
-  suministro: [
-    { id_distribuidora: 1, id_proveedor: 1, id_producto: 1, fecha_suministro: "2023-10-10", cantidad_recibida: 50, precio_adquisicion: 35.00 }
+  suministros: [
+    { id_distribuidora: 1, id_proveedor: 1, id_producto: 1, fecha_suministro: '2025-05-20', cantidad_recibida: 500, precio_adquisicion: 12.00 },
   ],
-  telcliente: [
-    { id: 1, id_cliente: 1, telefono: "5551234567" }
+  telCliente: [
+    { id: 1, id_cliente: 1, telefono: '5512345678' },
   ],
-  teltrabajador: [
-    { id: 1, id_trabajador: 1, telefono: "5559876543" }
-  ]
+  telTrabajador: [
+    { id: 1, id_trabajador: 1, telefono: '5587654321' },
+  ],
 };
 
-let ids = {
+// Contadores de IDs
+const SEQ = {
   cliente: 3, proveedor: 2, producto: 4, trabajador: 3,
-  compra: 2, telcliente: 2, teltrabajador: 2
+  compra: 3, telCliente: 2, telTrabajador: 2,
 };
 
+// ── API EN MEMORIA ────────────────────────────────────────────────────────────
+function apiGet(endpoint) {
+  if (endpoint === '/cliente')           return Promise.resolve(DB.clientes);
+  if (endpoint === '/clientefactura')    return Promise.resolve(DB.clienteFactura);
+  if (endpoint === '/clientesinfactura') return Promise.resolve(DB.clienteSinFactura);
+  if (endpoint === '/proveedor')         return Promise.resolve(DB.proveedores);
+  if (endpoint === '/producto')          return Promise.resolve(DB.productos);
+  if (endpoint === '/trabajador')        return Promise.resolve(DB.trabajadores);
+  if (endpoint === '/trabajadorinterno') return Promise.resolve(DB.trabajadorInterno);
+  if (endpoint === '/repartidor')        return Promise.resolve(DB.repartidores);
+  if (endpoint === '/compra')            return Promise.resolve(DB.compras);
+  if (endpoint === '/detalle')           return Promise.resolve(DB.detalle);
+  if (endpoint === '/suministro')        return Promise.resolve(DB.suministros);
+  if (endpoint === '/telcliente')        return Promise.resolve(DB.telCliente);
+  if (endpoint === '/teltrabajador')     return Promise.resolve(DB.telTrabajador);
+  if (endpoint === '/distribuidora')     return Promise.resolve([]);
+  if (endpoint === '/usuarios')          return Promise.resolve(DB.usuarios);
+  return Promise.resolve([]);
+}
 
-// ─── LÓGICA CORE (Mocking API) ──────────────────────────────────
+function apiPost(endpoint, body) {
+  try {
+    if (endpoint === '/cliente') {
+      const id = SEQ.cliente++;
+      const r = { id_cliente: id, nombre: body.nombre||'', dir_calle_ciudad: body.dir_calle_ciudad||'', dir_cp: body.dir_cp||'', correo: body.correo||'', tipo_cliente: body.tipo_cliente||'Sin factura', tipo_atencion: body.tipo_atencion||'Mostrador' };
+      DB.clientes.push(r);
+      if (body.tipo_cliente === 'Con factura' && body.rfc) {
+        DB.clienteFactura.push({ id_cliente: id, rfc: body.rfc });
+      } else {
+        DB.clienteSinFactura.push({ id_cliente: id });
+      }
+      return Promise.resolve(r);
+    }
+    if (endpoint === '/clientefactura') {
+      const id = parseInt(body.id_cliente);
+      if (!DB.clientes.find(c => c.id_cliente === id)) throw new Error('Cliente no existe');
+      if (DB.clienteFactura.find(c => c.id_cliente === id)) throw new Error('Ya registrado');
+      DB.clienteFactura.push({ id_cliente: id, rfc: body.rfc||'' });
+      return Promise.resolve({});
+    }
+    if (endpoint === '/clientesinfactura') {
+      const id = parseInt(body.id_cliente);
+      if (!DB.clientes.find(c => c.id_cliente === id)) throw new Error('Cliente no existe');
+      if (DB.clienteSinFactura.find(c => c.id_cliente === id)) throw new Error('Ya registrado');
+      DB.clienteSinFactura.push({ id_cliente: id });
+      return Promise.resolve({});
+    }
+    if (endpoint === '/proveedor') {
+      const r = { id_proveedor: SEQ.proveedor++, nombre: body.nombre||'', rfc: body.rfc||'', contacto: body.contacto||'' };
+      DB.proveedores.push(r);
+      return Promise.resolve(r);
+    }
+    if (endpoint === '/producto') {
+      const r = { id_producto: SEQ.producto++, nombre: body.nombre||'', codigo_barras: body.codigo_barras||'', precio_venta: parseFloat(body.precio_venta)||0, stock: parseInt(body.stock)||0 };
+      DB.productos.push(r);
+      return Promise.resolve(r);
+    }
+    if (endpoint === '/trabajador') {
+      const id = SEQ.trabajador++;
+      const r = { id_trabajador: id, nombre: body.nombre||'', curp: body.curp||'', sueldo: parseFloat(body.sueldo)||0, id_distribuidora: parseInt(body.id_distribuidora)||1 };
+      DB.trabajadores.push(r);
+      if (body.tipo_trabajador === 'interno') {
+        DB.trabajadorInterno.push({ id_trabajador: id, turno: body.turno||'Matutino' });
+      } else if (body.tipo_trabajador === 'repartidor') {
+        DB.repartidores.push({ id_trabajador: id, zona_reparto: body.zona_reparto||'', tipo_vehiculo: body.tipo_vehiculo||'' });
+      }
+      return Promise.resolve(r);
+    }
+    if (endpoint === '/trabajadorinterno') {
+      const id = parseInt(body.id_trabajador);
+      if (!DB.trabajadores.find(t => t.id_trabajador === id)) throw new Error('Trabajador no existe');
+      DB.trabajadorInterno.push({ id_trabajador: id, turno: body.turno||'Matutino' });
+      return Promise.resolve({});
+    }
+    if (endpoint === '/repartidor') {
+      const id = parseInt(body.id_trabajador);
+      if (!DB.trabajadores.find(t => t.id_trabajador === id)) throw new Error('Trabajador no existe');
+      DB.repartidores.push({ id_trabajador: id, zona_reparto: body.zona_reparto||'', tipo_vehiculo: body.tipo_vehiculo||'' });
+      return Promise.resolve({});
+    }
+    if (endpoint === '/compra') {
+      const r = { id_compra: SEQ.compra++, id_cliente: parseInt(body.id_cliente)||0, fecha: body.fecha||'', total: parseFloat(body.total)||0 };
+      DB.compras.push(r);
+      return Promise.resolve(r);
+    }
+    if (endpoint === '/detalle') {
+      const cant = parseInt(body.cantidad)||0;
+      const precio = parseFloat(body.precio_unitario)||0;
+      const r = { id_compra: parseInt(body.id_compra)||0, id_producto: parseInt(body.id_producto)||0, cantidad: cant, precio_unitario: precio, subtotal: cant * precio };
+      // Descontar stock
+      const prod = DB.productos.find(p => p.id_producto === r.id_producto);
+      if (prod) prod.stock = Math.max(0, prod.stock - cant);
+      DB.detalle.push(r);
+      return Promise.resolve(r);
+    }
+    if (endpoint === '/suministro') {
+      const r = { id_distribuidora: parseInt(body.id_distribuidora)||0, id_proveedor: parseInt(body.id_proveedor)||0, id_producto: parseInt(body.id_producto)||0, fecha_suministro: body.fecha_suministro||'', cantidad_recibida: parseInt(body.cantidad_recibida)||0, precio_adquisicion: parseFloat(body.precio_adquisicion)||0 };
+      // Incrementar stock
+      const prod = DB.productos.find(p => p.id_producto === r.id_producto);
+      if (prod) prod.stock += r.cantidad_recibida;
+      DB.suministros.push(r);
+      return Promise.resolve(r);
+    }
+    if (endpoint === '/telcliente') {
+      const r = { id: SEQ.telCliente++, id_cliente: parseInt(body.id_cliente)||0, telefono: body.telefono||'' };
+      DB.telCliente.push(r);
+      return Promise.resolve(r);
+    }
+    if (endpoint === '/teltrabajador') {
+      const r = { id: SEQ.telTrabajador++, id_trabajador: parseInt(body.id_trabajador)||0, telefono: body.telefono||'' };
+      DB.telTrabajador.push(r);
+      return Promise.resolve(r);
+    }
+    return Promise.resolve({});
+  } catch(e) {
+    return Promise.reject(e);
+  }
+}
+
+function apiDelete(endpoint) {
+  const parts = endpoint.split('/').filter(Boolean);
+  const recurso = parts[0];
+  const id = parts[1];
+
+  if (recurso === 'cliente') {
+    const n = parseInt(id);
+    DB.clientes           = DB.clientes.filter(r => r.id_cliente !== n);
+    DB.clienteFactura     = DB.clienteFactura.filter(r => r.id_cliente !== n);
+    DB.clienteSinFactura  = DB.clienteSinFactura.filter(r => r.id_cliente !== n);
+    DB.telCliente         = DB.telCliente.filter(r => r.id_cliente !== n);
+  } else if (recurso === 'clientefactura') {
+    DB.clienteFactura = DB.clienteFactura.filter(r => r.id_cliente !== parseInt(id));
+  } else if (recurso === 'clientesinfactura') {
+    DB.clienteSinFactura = DB.clienteSinFactura.filter(r => r.id_cliente !== parseInt(id));
+  } else if (recurso === 'proveedor') {
+    DB.proveedores = DB.proveedores.filter(r => r.id_proveedor !== parseInt(id));
+  } else if (recurso === 'producto') {
+    DB.productos = DB.productos.filter(r => r.id_producto !== parseInt(id));
+  } else if (recurso === 'trabajador') {
+    const n = parseInt(id);
+    DB.trabajadores      = DB.trabajadores.filter(r => r.id_trabajador !== n);
+    DB.trabajadorInterno = DB.trabajadorInterno.filter(r => r.id_trabajador !== n);
+    DB.repartidores      = DB.repartidores.filter(r => r.id_trabajador !== n);
+    DB.telTrabajador     = DB.telTrabajador.filter(r => r.id_trabajador !== n);
+  } else if (recurso === 'trabajadorinterno') {
+    DB.trabajadorInterno = DB.trabajadorInterno.filter(r => r.id_trabajador !== parseInt(id));
+  } else if (recurso === 'repartidor') {
+    DB.repartidores = DB.repartidores.filter(r => r.id_trabajador !== parseInt(id));
+  } else if (recurso === 'compra') {
+    const n = parseInt(id);
+    DB.compras = DB.compras.filter(r => r.id_compra !== n);
+    DB.detalle = DB.detalle.filter(r => r.id_compra !== n);
+  } else if (recurso === 'detalle') {
+    const comp = parseInt(id), prod = parseInt(parts[2]);
+    DB.detalle = DB.detalle.filter(r => !(r.id_compra === comp && r.id_producto === prod));
+  } else if (recurso === 'suministro') {
+    const dis = parseInt(id), prov = parseInt(parts[2]), prod = parseInt(parts[3]), fecha = parts[4];
+    DB.suministros = DB.suministros.filter(r => !(r.id_distribuidora === dis && r.id_proveedor === prov && r.id_producto === prod && r.fecha_suministro === fecha));
+  } else if (recurso === 'telcliente') {
+    DB.telCliente = DB.telCliente.filter(r => r.id !== parseInt(id));
+  } else if (recurso === 'teltrabajador') {
+    DB.telTrabajador = DB.telTrabajador.filter(r => r.id !== parseInt(id));
+  }
+  return Promise.resolve();
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
 function show(id) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -1344,87 +1688,6 @@ function setErr(key, msg) {
   if (el) el.textContent = msg ? '⚠ ' + msg : '';
 }
 
-async function apiPost(endpoint, body) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const table = endpoint.replace('/', '');
-      let newItem = { ...body };
-
-      if (table === 'cliente') newItem.id_cliente = ids.cliente++;
-      if (table === 'proveedor') newItem.id_proveedor = ids.proveedor++;
-      if (table === 'producto') newItem.id_producto = ids.producto++;
-      if (table === 'trabajador') newItem.id_trabajador = ids.trabajador++;
-      if (table === 'compra') newItem.id_compra = ids.compra++;
-      if (table === 'telcliente') newItem.id = ids.telcliente++;
-      if (table === 'teltrabajador') newItem.id = ids.teltrabajador++;
-
-      if (table === 'detalle') {
-        newItem.subtotal = parseFloat(newItem.cantidad) * parseFloat(newItem.precio_unitario);
-      }
-
-      mockDB[table].push(newItem);
-
-      // Cascadas simuladas
-      if (table === 'cliente') {
-        if (newItem.tipo_cliente === 'Con factura') {
-          mockDB.clientefactura.push({ id_cliente: newItem.id_cliente, rfc: newItem.rfc });
-        } else {
-          mockDB.clientesinfactura.push({ id_cliente: newItem.id_cliente });
-        }
-      }
-
-      if (table === 'trabajador') {
-        if (newItem.tipo_trabajador === 'interno') {
-          mockDB.trabajadorinterno.push({ id_trabajador: newItem.id_trabajador, turno: newItem.turno });
-        } else if (newItem.tipo_trabajador === 'repartidor') {
-          mockDB.repartidor.push({ id_trabajador: newItem.id_trabajador, zona_reparto: newItem.zona_reparto, tipo_vehiculo: newItem.tipo_vehiculo });
-        }
-      }
-
-      resolve({ ok: true });
-    }, 100); // Simulamos retraso de red
-  });
-}
-
-async function apiGet(endpoint) {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      const table = endpoint.replace('/', '');
-      resolve(mockDB[table] || []);
-    }, 50);
-  });
-}
-
-async function apiDelete(endpoint) {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      const parts = endpoint.split('/').filter(Boolean);
-      const table = parts[0];
-      const id1 = parts[1];
-      const id2 = parts[2]; 
-
-      if (!mockDB[table]) return resolve();
-
-      if (table === 'detalle') {
-        mockDB[table] = mockDB[table].filter(item => !(item.id_compra == id1 && item.id_producto == id2));
-      } else if (table === 'suministro') {
-        const dis = parts[1], prov = parts[2], prod = parts[3], fecha = parts[4];
-        mockDB[table] = mockDB[table].filter(item => !(item.id_distribuidora == dis && item.id_proveedor == prov && item.id_producto == prod && item.fecha_suministro == fecha));
-      } else {
-        let idField = 'id';
-        if (['cliente', 'clientefactura', 'clientesinfactura'].includes(table)) idField = 'id_cliente';
-        if (table === 'proveedor') idField = 'id_proveedor';
-        if (table === 'producto') idField = 'id_producto';
-        if (['trabajador', 'trabajadorinterno', 'repartidor'].includes(table)) idField = 'id_trabajador';
-        if (table === 'compra') idField = 'id_compra';
-        
-        mockDB[table] = mockDB[table].filter(item => item[idField] != id1);
-      }
-      resolve();
-    }, 100);
-  });
-}
-
 function delBtn(onclick) {
   return `<td><button class="btn-delete btn-accion" onclick="${onclick}">Eliminar</button></td>`;
 }
@@ -1432,7 +1695,6 @@ function delBtn(onclick) {
 document.querySelectorAll('input[type="date"]').forEach(el => {
   el.value = new Date().toISOString().split('T')[0];
 });
-
 
 // ── CLIENTE ── (con mapa inline)
 async function cargarCliente() {
@@ -1510,6 +1772,7 @@ async function addCliente() {
   }
 
   try {
+    // El servidor inserta automáticamente en cliente_factura o cliente_sin_factura
     await apiPost('/cliente', {
       nombre: v('c_nombre'),
       dir_calle_ciudad: v('c_dir'),
@@ -1535,6 +1798,22 @@ async function addCliente() {
   } catch(e) { setErr('cliente', e.message); }
 }
 async function delCliente(id) { if (soloConsulta()) return; await apiDelete('/cliente/' + id); cargarCliente(); cargarClienteFactura(); cargarClienteSinFactura(); }
+
+// ── DISTRIBUIDORA
+async function cargarDistribuidora() {
+  const rows = await apiGet('/distribuidora');
+  const tb = document.getElementById('t_distribuidora');
+  if (!tb) return;
+  tb.innerHTML = '';
+  rows.forEach(r => {
+    tb.innerHTML += `<tr>
+      <td>${r.nombre}</td><td>${r.rfc}</td><td>${r.dir_calle_ciudad}</td>
+      <td>${r.dir_cp}</td><td>${r.telefono||''}</td><td>${r.correo||''}</td>
+      ${delBtn(`delDistribuidora(${r.id_distribuidora})`)}
+    </tr>`;
+  });
+}
+async function delDistribuidora(id) { await apiDelete('/distribuidora/' + id); cargarDistribuidora(); }
 
 // ── CLIENTE CON FACTURA
 async function cargarClienteFactura() {
@@ -1650,6 +1929,7 @@ async function addTrabajador() {
   }
 
   try {
+    // El servidor inserta automáticamente en trabajador_interno o repartidor
     await apiPost('/trabajador', {
       nombre: v('tr_nombre'),
       curp: v('tr_curp'),
@@ -1662,6 +1942,7 @@ async function addTrabajador() {
       tipo_vehiculo: v('tr_vehiculo') || undefined
     });
 
+    // Limpiar campos
     ['tr_nombre','tr_curp','tr_sueldo','tr_distrib','tr_zona','tr_vehiculo','tr_area'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.value = '';
@@ -1905,7 +2186,8 @@ function iniciarReloj() {
 function aplicarPermisos(rol, nombreUsuario) {
   rolActual = rol;
   usuarioActual = nombreUsuario || 'Usuario';
-  
+  const permitidas = PERMISOS[rol] || [];
+
   const nameEl = document.getElementById('welcomeName');
   const rolEl  = document.getElementById('welcomeRol');
   if (nameEl) nameEl.textContent = usuarioActual;
@@ -1953,51 +2235,40 @@ function cerrarSesion() {
   location.reload();
 }
 
-async function doLogin() {
+function doLogin() {
   const user = document.getElementById('loginUser').value.trim();
   const pass = document.getElementById('loginPass').value;
   const errEl = document.getElementById('loginError');
   const btn = document.querySelector('.login-btn');
+  const btnText = document.querySelector('.login-btn-text');
 
   if (!user || !pass) {
     errEl.textContent = '⚠ Completa usuario y contraseña.';
     return;
   }
 
-  btn.textContent = 'Verificando...';
+  btnText.textContent = 'Verificando...';
   btn.disabled = true;
   errEl.textContent = '';
 
-  setTimeout(() => {
-    // USUARIOS QUEMADOS PARA VERSIÓN ESTÁTICA
-    const usuariosMocks = {
-      'admin': { password: '123', rol: 'admin', nombre: 'Admin Master' },
-      'gerente': { password: '123', rol: 'gerente', nombre: 'Gerente Kafra' },
-      'vendedor': { password: '123', rol: 'vendedor', nombre: 'Vendedor Estrella' },
-      'almacen': { password: '123', rol: 'almacenista', nombre: 'Jefe Almacén' },
-      'repartidor': { password: '123', rol: 'repartidor', nombre: 'Repartidor 1' },
-      'consulta': { password: '123', rol: 'consulta', nombre: 'Invitado Consulta' }
-    };
+  const found = DB.usuarios.find(u => u.usuario === user && u.password === pass);
 
-    const userRecord = usuariosMocks[user.toLowerCase()];
+  if (found) {
+    sessionStorage.setItem('kafra_rol', found.rol);
+    sessionStorage.setItem('kafra_usuario', found.nombre || found.usuario);
+    const overlay = document.getElementById('loginOverlay');
+    overlay.classList.add('hidden');
+    document.body.classList.remove('login-active');
+    setTimeout(() => overlay.style.display = 'none', 420);
+    aplicarPermisos(found.rol, found.nombre || found.usuario);
+  } else {
+    errEl.textContent = '✕ Usuario o contraseña incorrectos.';
+    document.getElementById('loginPass').value = '';
+    document.getElementById('loginPass').focus();
+  }
 
-    if (userRecord && userRecord.password === pass) {
-      sessionStorage.setItem('kafra_rol', userRecord.rol);
-      sessionStorage.setItem('kafra_usuario', userRecord.nombre);
-      const overlay = document.getElementById('loginOverlay');
-      overlay.classList.add('hidden');
-      document.body.classList.remove('login-active');
-      setTimeout(() => overlay.style.display = 'none', 420);
-      aplicarPermisos(userRecord.rol, userRecord.nombre);
-    } else {
-      errEl.textContent = '✕ Usuario o contraseña incorrectos. (Prueba: admin / 123)';
-      document.getElementById('loginPass').value = '';
-      document.getElementById('loginPass').focus();
-    }
-
-    btn.textContent = 'Iniciar sesión →';
-    btn.disabled = false;
-  }, 400); // Simulamos retraso de validación
+  btnText.textContent = 'Iniciar sesión';
+  btn.disabled = false;
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -2012,6 +2283,8 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('loginUser').focus();
   }
 });
+
+
 </script>
 
 </body>
